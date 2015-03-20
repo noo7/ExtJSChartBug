@@ -4,7 +4,12 @@ Ext.define('MyApp.model.Message', {
     	{
         	name: 'time',
        		dateFormat:'timestamp',
-        	type: 'date'
+        	type: 'date',
+            convert: function(val,rec){
+                console.log('CONVERTING MESSAGE INSTANCES');
+                console.log(val);
+                
+            }
         },
         {
             name: 'position',

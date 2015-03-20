@@ -5,5 +5,11 @@ Ext.define('MyApp.store.Messages',{
         'MyApp.model.Message'
     ],
     model: 'MyApp.model.Message',
-    autoLoad: false
+    autoLoad: false,
+    proxy:{
+    	type:'memory',
+    	reader:{
+    		type:'json'
+    	}
+    }
 });

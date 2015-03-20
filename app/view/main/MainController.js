@@ -18,12 +18,15 @@ Ext.define('MyApp.view.main.MainController', {
     nowLineStore: Ext.create('MyApp.store.Messages'),
     subscribedTrains:{},
     onClickButton: function(){
+        var panzoom = this.lookupReference('runlinechart').getInteractions()[0];
+        this.getView().lookupReference('buttonsContainer').add(panzoom.getModeToggleButton());
         console.log('INSIDE ON CLICK');
         this.initRunLineChart();
         //var intervalID = setInterval(this.updateRunlineChart(this),2000);
     },
     //init runlinechart with two series
     initRunLineChart: function(){
+
         var currDate = new Date();
         var currTime = currDate.getTime();
         var runlinechart = this.lookupReference('runlinechart');
@@ -86,16 +89,16 @@ Ext.define('MyApp.view.main.MainController', {
                         size: 7,
                         radius: 7
                 },
-                tooltip: {
-                        trackMouse: true,
-                        width:140,
-                        height:28,
-                        renderer: function(storeItem, item) {
-                            var time  = new Date(storeItem.get('time'));
+                // tooltip: {
+                //         trackMouse: true,
+                //         width:140,
+                //         height:28,
+                //         renderer: function(storeItem, item) {
+                //             var time  = new Date(storeItem.get('time'));
                        
-                            this.setHtml(time.getUTCHours() + ':' + time.getUTCMinutes() + 'At Location: ' +  storeItem.get('position') + ' Track Nr:' + storeItem.get('track'));
-                        }
-                    },
+                //             this.setHtml(time.getUTCHours() + ':' + time.getUTCMinutes() + 'At Location: ' +  storeItem.get('position') + ' Track Nr:' + storeItem.get('track'));
+                //         }
+                //     },
                 style:{
                     strokeStyle:'black'
                 }
@@ -111,38 +114,39 @@ Ext.define('MyApp.view.main.MainController', {
 
     },
     updateNowLine: function(nowTime){
-        debugger;
         var runlinechart = this.lookupReference('runlinechart');
         var runlinesSeries = runlinechart.getSeries();
         var nowStore = this.nowLineStore;
         nowStore.removeAll();
         console.log('INSIDE UPDATE NOW LINE');
-        nowStore.add([
-           {
-               position: 0,
-               time: nowTime
-           },
-           {
-               position: 100,
-               time: nowTime
-           } 
-        ]);
+
+        var dataPoint0 = {};
+        dataPoint0.time = nowTime;
+        dataPoint0.position = 0;
+
+        var dataPoint1 = {};
+        dataPoint1.time = nowTime;
+        dataPoint1.position = 100;
+        var dataPoints = [];
+        dataPoints.push(dataPoint0);
+        dataPoints.push(dataPoint1);
+        nowStore.add(dataPoints);
 
     },
-    updateRunlineChart: function(mee){
+    updateRunlineChart: function(){
         var trainLabels = ['FIRST', 'SECOND', 'TN4711','NEW111','NEW222'];
         var msgs = [];
         var msg = {"position": undefined, "time":undefined , "kind":1, "trainLabel": undefined, "track": 0 };
         var currDate = new Date();
         var currTimeStamp = currDate.getTime();
-        var idx = Math.round(mee.random(4,0));
+        var idx = Math.round(this.random(4,0));
 
         msg.time = currTimeStamp;
-        msg.position = mee.random(100,0);
+        msg.position = this.random(100,0);
         msg.trainLabel = trainLabels[idx];
         msgs.push(msg);
-        var subscribedTrains = mee.subscribedTrains;
-        var me = mee;
+        var subscribedTrains = this.subscribedTrains;
+        var me = this;
         var runlinechart = me.lookupReference('runlinechart');
         var runlinesSeries = runlinechart.getSeries();
         var timeAxis = runlinechart.getAxis(0);
@@ -195,16 +199,16 @@ Ext.define('MyApp.view.main.MainController', {
                         size: 7,
                         radius: 7
                     },
-                    tooltip: {
-                         trackMouse: true,
-                         width:140,
-                         height:28,
-                         renderer: function(storeItem, item) {
-                             var time  = new Date(storeItem.get('time'));
+                    // tooltip: {
+                    //      trackMouse: true,
+                    //      width:140,
+                    //      height:28,
+                    //      renderer: function(storeItem, item) {
+                    //          var time  = new Date(storeItem.get('time'));
                         
-                             this.setHtml(time.getUTCHours() + ':' + time.getUTCMinutes() + 'At Location: ' +  storeItem.get('position') + ' Track Nr:' + storeItem.get('track'));
-                         }
-                     },
+                    //          this.setHtml(time.getUTCHours() + ':' + time.getUTCMinutes() + 'At Location: ' +  storeItem.get('position') + ' Track Nr:' + storeItem.get('track'));
+                    //      }
+                    //  },
                     style:{
                         strokeStyle:'black'
                     }

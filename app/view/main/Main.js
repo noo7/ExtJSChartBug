@@ -35,9 +35,14 @@ Ext.define('MyApp.view.main.Main', {
         region: 'west',
         width: 250,
         split: true,
+        reference:'buttonsContainer',
         tbar: [{
             text: 'start',
             handler: 'onClickButton'
+        },
+        {
+            text: 'update',
+            handler:'updateRunlineChart'
         }]
         },
         {
@@ -50,6 +55,22 @@ Ext.define('MyApp.view.main.Main', {
                 docked: 'top'
             },
             reference:'runlinechart',
+            interactions: [{
+                type: 'panzoom',
+                axes:{
+                    left: {
+                    maxZoom: 10,
+                    allowPan: true
+                    },
+                
+                    right: {
+                    maxZoom: 10,
+                    allowPan: true
+                    },
+                    bottom: false
+                },
+                zoomOnPanGesture: true
+             }],
             axes: [{
                 type: 'time',
                 id:'main-time-axis',

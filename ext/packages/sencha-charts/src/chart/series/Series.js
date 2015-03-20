@@ -655,13 +655,13 @@ Ext.define('Ext.chart.series.Series', {
             offsetY: 10
         });
         for (i = 0; i < interactions.length; i++) {
-            if (interactions[i].type === 'itemhightlight') {
+            if (interactions[i].type === 'itemhighlight') {
                 hasItemHighlight = true;
                 break;
             }
         }
         if (!hasItemHighlight) {
-            interactions.push('itemhighlight');
+            interactions.push({type:'itemhighlight'});
             chart.setInteractions(interactions);
         }
         return new Ext.tip.ToolTip(config);
